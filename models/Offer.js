@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Création du modèle Offer (collection "Offer")
 const Offer = mongoose.model("Offer", {
   title: String,
   description: String,
@@ -8,6 +9,7 @@ const Offer = mongoose.model("Offer", {
     type: Date,
     default: Date.now
   },
+  // Ci-dessous, nous créons une référence vers un modèle nommé `User`
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"

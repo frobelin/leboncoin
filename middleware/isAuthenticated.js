@@ -1,5 +1,6 @@
 const User = require("../models/User");
 
+// express nous passe la requète (req), la réponse (res) et une fonction next qui permet d'indiquer à express que l'on a fini
 const isAuthenticated = async (req, res, next) => {
   // Vérifie si le user est bien authentifié par son token
   if (req.headers.authorization) {
@@ -9,8 +10,9 @@ const isAuthenticated = async (req, res, next) => {
     if (!user) {
       return res.json({ error: "Unauthorized" });
     } else {
+      // créer une clé "user" dans req. La route pourra avoir accès à req.user
       req.user = user;
-      next();
+      return next();
     }
   } else {
     return res.json({ error: "Unauthorized" });
