@@ -10,21 +10,26 @@ const encBase64 = require("crypto-js/enc-base64");
 
 // Inscription 'Sign Up' : CREATE
 router.post("/user/signup", async (req, res) => {
-  // Le salt va être ajouté au password pour être hashé
-  const salt = uid2(64);
-  // Le hash est le résultat de l'encryption du (mot de passe + le salt)
-  const hash = SHA256(req.fields.password + salt).toString(encBase64);
-  // Le token servira plus tard pour tracer l'utilisateur
-  const token = uid2(64);
-
   try {
     // On recherche dans la base de donées si l'email a déjà été utilisée pour s'inscrire
     const previousUser = await User.findOne({ email: req.fields.email });
 
     // Si l'email existe déjà dans la base de données : ERREUR et pas d'inscription
     if (!previousUser) {
-      // Si le username est manquant : ERREUR et pas d'inscription
-      if (req.fields.username) {
+      // Si des paramètres sont manquants : ERREUR et pas d'inscription
+      if (
+        req.fields.username &&
+        req.fields.email &&
+        req.fields.password &&
+        req.fields.phone
+      ) {
+        // Le salt va être ajouté au password pour être hashé
+        const salt = uid2(64);
+        // Le hash est le résultat de l'encryption du (mot de passe + le salt)
+        const hash = SHA256(req.fields.password + salt).toString(encBase64);
+        // Le token servira plus tard pour tracer l'utilisateur
+        const token = uid2(64);
+
         const newUser = new User({
           email: req.fields.email,
           token: token,
@@ -48,7 +53,7 @@ router.post("/user/signup", async (req, res) => {
           }
         });
       } else {
-        return res.json({ error: "Enter your username, please" });
+        return res.json({ error: "Missing parameter(s)" });
       }
     } else {
       return res.json({ error: "This email already exists" });

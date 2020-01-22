@@ -5,13 +5,8 @@ const User = require("../models/User");
 const Offer = require("../models/Offer");
 const isAuthenticated = require("../middleware/isAuthenticated");
 
-// Importation des packages permettant l'encryption du mot de passe
-const uid2 = require("uid2");
-const SHA256 = require("crypto-js/sha256");
-const encBase64 = require("crypto-js/enc-base64");
-
 // Route pour les tests !... et lire le req.user !
-router.post("/user/test", isAuthenticated, async (req, res) => {
+router.post("/offer/test", isAuthenticated, async (req, res) => {
   console.log(req.user);
   res.json({ message: "Test route" });
 });
