@@ -23,6 +23,9 @@ const userRoutes = require("./routes/user");
 // Activation de l'utilisation des routes
 app.use(userRoutes);
 
+const offerRoutes = require("./routes/offer");
+app.use(offerRoutes);
+
 // Pour gérer les pages introuvables
 app.all("*", (req, res) => {
   res.json({ message: "Page not found" });
