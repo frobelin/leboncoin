@@ -6,7 +6,7 @@ const formidableMiddleware = require("express-formidable");
 // Importation du package pour manipuler des bases de données MongoDB
 const mongoose = require("mongoose");
 
-// Utilisation des variables d'environnement
+// Permet d'activer les variables d'environnement qui se trouvent dans le fichier `.env`
 require("dotenv").config();
 
 // Initialisation du Serveur appelé 'app'
@@ -14,7 +14,7 @@ const app = express();
 // Active la possibilité de récupérer les paramètres tramsmis lors des requêtes HTTP de type POST
 app.use(formidableMiddleware());
 
-// Initialisation d'une base de données
+// Initialisation d'une base de données + connection à la base de données sans préciser les identifiants (variables d'environnement)
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

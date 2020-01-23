@@ -11,7 +11,7 @@ router.post("/offer/test", isAuthenticated, async (req, res) => {
   res.json({ message: "Test route" });
 });
 
-// On utilise notre middleware isAuthenticated sur la route '/offer/publish'
+// On utilise le middleware isAuthenticated sur la route '/offer/publish'
 router.post("/offer/publish", isAuthenticated, async (req, res) => {
   try {
     const previousOffer = await Offer.findOne({ title: req.fields.title });
@@ -74,7 +74,7 @@ const createFilters = req => {
   return filters;
 };
 
-// Route pour faire la recherche d'annonces spécifiques
+// Route pour lancer la recherche d'annonces selon des critères spécifiques
 router.get("/offer/with-count", async (req, res) => {
   try {
     const filters = createFilters(req);
@@ -92,7 +92,7 @@ router.get("/offer/with-count", async (req, res) => {
       search.sort({ price: -1 });
     }
 
-    // Gestion de l'affichage des résultats par page
+    // Gestion de l'affichage des résultats par page (limit = nb de résultats affichés, skip = ignorer les x premiers)
     if (req.query.page) {
       const page = req.query.page;
       const limit = 4;
