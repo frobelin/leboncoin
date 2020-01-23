@@ -29,6 +29,11 @@ app.use(userRoutes);
 const offerRoutes = require("./routes/offer");
 app.use(offerRoutes);
 
+// Accueil
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to leboncoin API" });
+});
+
 // Pour gérer les pages introuvables
 app.all("*", (req, res) => {
   res.json({ message: "Page not found" });
