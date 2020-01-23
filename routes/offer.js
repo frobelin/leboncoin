@@ -79,7 +79,7 @@ router.get("/offer/with-count", async (req, res) => {
   try {
     const filters = createFilters(req);
 
-    // Construction de la recherche
+    // Construction de la recherche avec l'objet filters
     const search = Offer.find(filters).populate({
       path: "creator",
       select: "account"
