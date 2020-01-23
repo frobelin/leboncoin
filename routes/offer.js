@@ -47,5 +47,82 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
   }
 });
 
+// Création d'une fonction pour créer l'objet filtre du find
+const createFilters = req => {
+  const filters = {};
+
+  // Gestion du prix minimum
+  if (req.query.priceMin) {
+    filters.price = {};
+    filters.price.$gte = req.query.priceMin;
+  }
+
+  // Gestion du prix maximum
+  if (req.query.priceMax) {
+    if (filters.price === undefined) {
+      filters.price = {};
+    }
+    filters.price.$lte = req.query.priceMax;
+  }
+
+  // Gestion de l'objet de la demande
+  if (req.query.title) {
+    filters.title = new RegExp(req.query.title, "i");
+  }
+
+  // Envoi de l'objet final avec les filtres
+  return filters;
+};
+
+// Route pour faire la recherche d'annonces spécifiques
+router.get("/offer/with-count", async (req, res) => {
+  try {
+    const filters = createFilters(req);
+
+    // Construction de la recherche
+    const search = Offer.find(filters).populate({
+      path: "creator",
+      select: "account"
+    });
+
+    // Gestion de l'ordre d'affichage des prix des annonces
+    if (req.query.sort === "price-asc") {
+      search.sort({ price: 1 });
+    } else if (req.query.sort === "price-desc") {
+      search.sort({ price: -1 });
+    }
+
+    // Gestion de l'affichage des résultats par page
+    if (req.query.page) {
+      const page = req.query.page;
+      const limit = 4;
+
+      search.limit(limit).skip(limit * (page - 1));
+    }
+
+    // Déclenchement de la recherche grace au await
+    const offers = await search;
+    res.json({
+      count: offers.length,
+      offers: offers
+    });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+});
+
+// Service web pour récupérer les détails d'une annonce en fonction de son id
+router.get("/offer/:id", async (req, res) => {
+  try {
+    const offer = await Offer.findById(req.params.id).populate({
+      path: "creator",
+      select: "account"
+    });
+    res.json(offer);
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+});
+
 // Export des routes
 module.exports = router;

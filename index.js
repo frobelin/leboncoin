@@ -6,13 +6,15 @@ const formidableMiddleware = require("express-formidable");
 // Importation du package pour manipuler des bases de données MongoDB
 const mongoose = require("mongoose");
 
+require("dotenv").config();
+
 // Initialisation du Serveur appelé 'app'
 const app = express();
 // Active la possibilité de récupérer les paramètres tramsmis lors des requêtes HTTP de type POST
 app.use(formidableMiddleware());
 
 // Initialisation d'une base de données
-mongoose.connect("mongodb://localhost/leboncoin-app", {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
