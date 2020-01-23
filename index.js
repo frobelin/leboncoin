@@ -6,6 +6,7 @@ const formidableMiddleware = require("express-formidable");
 // Importation du package pour manipuler des bases de données MongoDB
 const mongoose = require("mongoose");
 
+// Utilisation des variables d'environnement
 require("dotenv").config();
 
 // Initialisation du Serveur appelé 'app'
