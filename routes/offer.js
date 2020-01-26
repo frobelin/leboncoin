@@ -92,6 +92,13 @@ router.get("/offer/with-count", async (req, res) => {
       search.sort({ price: -1 });
     }
 
+    // Gestion de l'ordre d'affichage des dates des annonces
+    if (req.query.sort === "date-asc") {
+      search.sort({ created: 1 });
+    } else if (req.query.sort === "date-desc") {
+      search.sort({ created: -1 });
+    }
+
     // Gestion de l'affichage des résultats par page (limit = nb de résultats affichés, skip = ignorer les x premiers)
     if (req.query.page) {
       const page = req.query.page;

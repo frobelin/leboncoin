@@ -9,7 +9,7 @@ const Offer = mongoose.model("Offer", {
     type: Date,
     default: Date.now
   },
-  // Ci-dessous, nous créons une référence vers un modèle nommé `User`
+  // Création d'une référence vers un modèle nommé `User`
   creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
